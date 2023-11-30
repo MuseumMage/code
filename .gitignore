@@ -2,3 +2,4 @@ fourier-transform/
 
 cmake-build-debug
 .idea
+.vscode

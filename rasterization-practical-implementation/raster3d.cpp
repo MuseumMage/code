@@ -202,7 +202,7 @@ int main(int argc, char **argv)
         
         
         // [comment]
-        // Prepare vertex attributes. Divde them by their vertex z-coordinate
+        // Prepare vertex attributes. Divide them by their vertex z-coordinate
         // (though we use a multiplication here because v.z = 1 / v.z)
         // [/comment]
         Vec2f st0 = st[stindices[i * 3]];
@@ -220,6 +220,7 @@ int main(int argc, char **argv)
         if (xmin > imageWidth - 1 || xmax < 0 || ymin > imageHeight - 1 || ymax < 0) continue;
 
         // be careful xmin/xmax/ymin/ymax can be negative. Don't cast to uint32_t
+        // Ensure boundary value positive
         uint32_t x0 = std::max(int32_t(0), (int32_t)(std::floor(xmin)));
         uint32_t x1 = std::min(int32_t(imageWidth) - 1, (int32_t)(std::floor(xmax)));
         uint32_t y0 = std::max(int32_t(0), (int32_t)(std::floor(ymin)));
@@ -236,6 +237,7 @@ int main(int argc, char **argv)
                 float w0 = edgeFunction(v1Raster, v2Raster, pixelSample);
                 float w1 = edgeFunction(v2Raster, v0Raster, pixelSample);
                 float w2 = edgeFunction(v0Raster, v1Raster, pixelSample);
+                // Point is inside the triangle
                 if (w0 >= 0 && w1 >= 0 && w2 >= 0) {
                     w0 /= area;
                     w1 /= area;
@@ -272,7 +274,7 @@ int main(int argc, char **argv)
                         // [comment]
                         // Compute the face normal which is used for a simple facing ratio.
                         // Keep in mind that we are doing all calculation in camera space.
-                        // Thus the view direction can be computed as the point on the object
+                        // Thus, the view direction can be computed as the point on the object
                         // in camera space minus Vec3f(0), the position of the camera in camera
                         // space.
                         // [/comment]
